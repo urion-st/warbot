@@ -25,7 +25,7 @@ client.once('ready', () => {
         threads.threads.forEach(async (thread) => {
             if (thread.rateLimitPerUser !== SEGUNDOS_SLOWMODE) {
                 await thread.setRateLimitPerUser(SEGUNDOS_SLOWMODE);
-                console.log(`Actualizado hilo antiguo: ${thread.name}`);
+                console.log(`Old thread updated: ${thread.name}`);
             }
         });
     });
@@ -39,3 +39,4 @@ http.createServer((req, res) => {
 
 
 client.login(TOKEN);
+
