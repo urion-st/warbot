@@ -31,10 +31,17 @@ client.once('ready', () => {
         try {
             const threads = await guild.channels.fetchActiveThreads();
             threads.threads.forEach(async (thread) => {
-                if (thread.parentId === DIPLO || thread.parent?.parentId === DIPLO) {
+                const isInDiplo = (thread.parentId === DIPLO || thread.parent?.parentId === DIPLO);
+
+                if (isInDiplo) {
                     if (thread.rateLimitPerUser !== SEGUNDOS_SLOWMODE) {
                         await thread.setRateLimitPerUser(SEGUNDOS_SLOWMODE);
-                        console.log(`Old thread updated: ${thread.name}`);
+                        console.log(`🛡️ DIPLO: Slowmode set for ${thread.name}`);
+                    }
+                } else {
+                    if (thread.rateLimitPerUser !== 0) {
+                        await thread.setRateLimitPerUser(0);
+                        console.log(`🔓 REVOKED: Slowmode removed from ${thread.name} (Not in DIPLO)`);
                     }
                 }
             });
@@ -44,7 +51,6 @@ client.once('ready', () => {
     });
 });
 
-// Servidor web básico para que el hosting no lo apague
 http.createServer((req, res) => {
     res.write("The bot is ready for war");
     res.end();
