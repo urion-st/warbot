@@ -56,4 +56,13 @@ http.createServer((req, res) => {
     res.end();
 }).listen(8080);
 
+setInterval(() => {
+    const url = `http://localhost:8080`;
+    http.get(url, (res) => {
+        console.log('Self-ping sent to stay awake.');
+    }).on('error', (err) => {
+        console.error('Self-ping error:', err.message);
+    });
+}, 300000);
+
 client.login(TOKEN);
